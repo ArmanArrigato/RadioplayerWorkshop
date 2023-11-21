@@ -7,6 +7,7 @@
 //   <source src="" type="audio/mpeg" />
 // </audio>
 
+//container 
 const channelsContainer = document.getElementById('channels');
 
 
@@ -14,38 +15,41 @@ function fetchChannels() {
   fetch('http://api.sr.se/api/v2/channels?format=json&size=100')
     .then(response => response.json())
     .then(data => {
-     
+      
       data.channels.forEach(channel => {
-        
-        const channelDiv = document.createElement('div');
-        channelDiv.className = 'channel';
-        
-        channelDiv.style.backgroundColor = '#' + channel.color;
-
        
-        const channelImg = document.createElement('img');
-        channelImg.src = channel.image;
-        channelImg.alt = channel.name;
+        if (channel.liveaudio && channel.liveaudio.url) {
+          
+          const channelDiv = document.createElement('div');
+          channelDiv.className = 'channel';
+          
+          channelDiv.style.backgroundColor = '#' + channel.color;
 
-        
-        const channelTitle = document.createElement('h2');
-        channelTitle.innerText = channel.name;
+          
+          const channelImg = document.createElement('img');
+          channelImg.src = channel.image;
+          channelImg.alt = channel.name;
 
-       
-        const channelAudio = document.createElement('audio');
-        channelAudio.controls = true;
-        const audioSource = document.createElement('source');
-        audioSource.src = channel.liveaudio.url;
-        audioSource.type = 'audio/mpeg';
-        channelAudio.appendChild(audioSource);
+         
+          const channelTitle = document.createElement('h2');
+          channelTitle.innerText = channel.name;
 
-        
-        channelDiv.appendChild(channelImg);
-        channelDiv.appendChild(channelTitle);
-        channelDiv.appendChild(channelAudio);
+          
+          const channelAudio = document.createElement('audio');
+          channelAudio.controls = true;
+          const audioSource = document.createElement('source');
+          audioSource.src = channel.liveaudio.url;
+          audioSource.type = 'audio/mpeg';
+          channelAudio.appendChild(audioSource);
 
-       
-        channelsContainer.appendChild(channelDiv);
+         
+          channelDiv.appendChild(channelImg);
+          channelDiv.appendChild(channelTitle);
+          channelDiv.appendChild(channelAudio);
+
+         
+          channelsContainer.appendChild(channelDiv);
+        }
       });
     })
     .catch(error => {
