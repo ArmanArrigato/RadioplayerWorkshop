@@ -10,7 +10,7 @@
 //container 
 const channelsContainer = document.getElementById('channels');
 
-
+//fetch
 function fetchChannels() {
   fetch('http://api.sr.se/api/v2/channels?format=json&size=100')
     .then(response => response.json())
