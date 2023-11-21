@@ -1,0 +1,14 @@
+.channel {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.channel h2 {
+    margin: 0 0 10px 0;
+}
+
+.channel img {
+    max-width: 100px;
+    height: auto;
+    display: block;
+}
