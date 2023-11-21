@@ -6,46 +6,52 @@
 // <audio controls>
 //   <source src="" type="audio/mpeg" />
 // </audio>
-const channelsContainer = document.getElementById(`channels`);
+
+const channelsContainer = document.getElementById('channels');
 
 
 function fetchChannels() {
-    fetch(`http://api.sr.se/api/v2/channels?format=json&size=100`)
-        .then(response => response.json())
-        .then(data => {
-           
-            data.channels.forEach(channel => {
+  fetch('http://api.sr.se/api/v2/channels?format=json&size=100')
+    .then(response => response.json())
+    .then(data => {
+     
+      data.channels.forEach(channel => {
+        
+        const channelDiv = document.createElement('div');
+        channelDiv.className = 'channel';
+        
+        channelDiv.style.backgroundColor = '#' + channel.color;
 
-                const channelDiv = document.createElement(`div`);
-                channelDiv.className = channel `channel`;
+       
+        const channelImg = document.createElement('img');
+        channelImg.src = channel.image;
+        channelImg.alt = channel.name;
 
-                channelDiv.style.backgroundColor = `#` + channel.color;
+        
+        const channelTitle = document.createElement('h2');
+        channelTitle.innerText = channel.name;
 
-                const channelImg = document.createElement(`img`);
-                channelImg.src = channel.image;
-                channelImg.alt = channel.name;
+       
+        const channelAudio = document.createElement('audio');
+        channelAudio.controls = true;
+        const audioSource = document.createElement('source');
+        audioSource.src = channel.liveaudio.url;
+        audioSource.type = 'audio/mpeg';
+        channelAudio.appendChild(audioSource);
 
-                const channelTitle = document.createElement(`h2`);
-                channelTitle.innerText = channel.name;
+        
+        channelDiv.appendChild(channelImg);
+        channelDiv.appendChild(channelTitle);
+        channelDiv.appendChild(channelAudio);
 
-                const channelAudio = document.createElement(`audio`);
-                channelAudio.controls = true;
-                const audioSource = document.createElement(`source`);
-                audioSource.src = channel.liveaudio.url;
-                audioSource.type = `audio/mpeg`;
-                channelAudio.appendChild(audioSource);
+       
+        channelsContainer.appendChild(channelDiv);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching channels:', error);
+    });
+}
 
-                channelDiv.appendChild(channelImg);
-                channelDiv.appendChild(channelTitle);
-                channelDiv.appendChild(channelAudio);
 
-                channelsContainer.appendChild(channelDiv);
-            });
-
-        })
-        .catch(error => {
-            console.error(`Error fetching channels:`, error);
-        })
-    }
-
-    fetchChannels();
+fetchChannels();
